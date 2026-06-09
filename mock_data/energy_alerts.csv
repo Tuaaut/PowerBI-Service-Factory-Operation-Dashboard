@@ -1,0 +1,6 @@
+alert_id,datetime,company_id,factory_id,equipment_id,severity,alert_type,message,current_value,threshold_value,status
+A001,2024-05-29 10:25:00,C001,F001,EQ002,Critical,Energy Usage,Energy usage higher than normal,115,100,In Progress
+A002,2024-05-29 09:47:00,C001,F001,EQ003,Warning,Temperature,Chiller temperature is high,31.5,30.0,Checking
+A003,2024-05-29 08:15:00,C001,F001,EQ005,Warning,Pressure,Air pressure is abnormal,4.8,5.5,Waiting Review
+A004,2024-05-29 10:40:00,C002,F003,EQ101,Warning,Energy Usage,Compressor energy usage above target,109,100,Checking
+A005,2024-05-29 11:05:00,C003,F004,EQ202,Warning,Energy Usage,Packaging line energy usage above target,106,100,Waiting Review

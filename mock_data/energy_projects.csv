@@ -1,0 +1,6 @@
+project_id,company_id,factory_id,project_name,status,progress_pct,expected_annual_saving_thb,start_date,target_finish_date
+P001,C001,F001,Change to LED lighting,In Progress,75,324000,2024-03-01,2024-07-31
+P002,C001,F001,Improve compressed air system,In Progress,60,512000,2024-04-15,2024-09-30
+P003,C001,F001,Install inverter for chilled water pump,Planning,25,198000,2024-06-01,2024-11-30
+P101,C002,F003,Optimize compressor sequencing,In Progress,45,620000,2024-05-01,2024-10-31
+P201,C003,F004,Upgrade packaging line motors,Planning,20,280000,2024-06-15,2024-12-15

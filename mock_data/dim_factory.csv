@@ -1,0 +1,5 @@
+factory_id,company_id,factory_name,province,timezone
+F001,C001,Factory 1,Rayong,Asia/Bangkok
+F002,C001,Factory 2,Chonburi,Asia/Bangkok
+F003,C002,Factory A,Ayutthaya,Asia/Bangkok
+F004,C003,Main Plant,Samut Prakan,Asia/Bangkok

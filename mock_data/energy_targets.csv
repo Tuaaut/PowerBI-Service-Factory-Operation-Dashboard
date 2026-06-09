@@ -1,0 +1,6 @@
+period,company_id,factory_id,target_energy_reduction_pct,target_energy_intensity,target_monthly_energy_kwh,target_monthly_carbon_kgco2e,target_monthly_cost_thb
+2024-05,C001,F001,10,0.045,5500,2000,270000
+2024-06,C001,F001,10,0.044,5400,1950,265000
+2024-07,C001,F001,12,0.043,5250,1900,258000
+2024-05,C002,F003,8,0.046,6900,2500,350000
+2024-05,C003,F004,9,0.047,4300,1500,210000

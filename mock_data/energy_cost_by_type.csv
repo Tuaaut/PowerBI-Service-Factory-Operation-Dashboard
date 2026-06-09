@@ -1,0 +1,11 @@
+date,company_id,factory_id,energy_type,cost_thb,share_pct
+2024-05-29,C001,F001,Electricity,16990,68
+2024-05-29,C001,F001,Natural Gas,6140,25
+2024-05-29,C001,F001,Fuel Oil,1940,7
+2024-05-29,C001,F001,Other,0,0
+2024-05-29,C002,F003,Electricity,22400,72
+2024-05-29,C002,F003,Natural Gas,6840,22
+2024-05-29,C002,F003,Fuel Oil,1870,6
+2024-05-29,C003,F004,Electricity,14120,76
+2024-05-29,C003,F004,Natural Gas,3720,20
+2024-05-29,C003,F004,Other,740,4

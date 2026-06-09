@@ -1,0 +1,13 @@
+equipment_id,factory_id,equipment_name,equipment_category,criticality
+EQ001,F001,Compressor #1,Compressed Air,High
+EQ002,F001,Compressor #2,Compressed Air,High
+EQ003,F001,Chiller #1,Cooling,High
+EQ004,F001,Boiler #1,Steam,Medium
+EQ005,F001,Air Line #3,Compressed Air,Medium
+EQ006,F001,Lighting System,Lighting,Low
+EQ007,F001,Production Line 1,Production,High
+EQ008,F001,Production Line 2,Production,High
+EQ101,F003,Compressor A,Compressed Air,High
+EQ102,F003,Chiller A,Cooling,High
+EQ201,F004,Main Compressor,Compressed Air,High
+EQ202,F004,Packaging Line,Production,High
