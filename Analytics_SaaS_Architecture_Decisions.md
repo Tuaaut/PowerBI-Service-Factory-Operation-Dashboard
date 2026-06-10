@@ -352,17 +352,49 @@ Reason:
 
 Much cheaper than Fabric F2.
 
-Approximate economics discussed:
+Updated economics discussed:
 
--   Power BI Pro ≈ \$10/user/month
--   6 users ≈ \$60/month
+-   Power BI Pro is currently around USD 14/user/month on Microsoft's official pricing page
+-   Older pricing/memory was around USD 10/user/month, so check current regional pricing before buying
+-   For private sharing, the admin/publisher and each private customer viewer generally need Pro unless the workspace is backed by Premium/Fabric capacity
+-   Example: 1 admin + 2 customer viewers generally means 3 Pro licenses
 -   BigQuery cost expected to be low
 
 Fabric F2:
 
-≈ \$321/month
+roughly a few hundred USD/month depending on region and purchase model
 
 Not economical at MVP scale.
+
+## Fabric Trial / Subscription Decision
+
+The current MVP does not require Fabric capacity because the data warehouse is BigQuery, not Fabric Warehouse/Lakehouse.
+
+Fabric should be considered later only if the project moves data workloads into Microsoft Fabric, such as:
+
+-   Fabric Warehouse
+-   Fabric Lakehouse
+-   OneLake
+-   Data Factory pipelines
+-   notebooks
+-   ML models
+
+If the need is only to publish and privately share this Power BI report, the preferred experiment-stage path is:
+
+``` text
+BigQuery warehouse
+  +
+Power BI Service workspace
+  +
+Power BI Pro licenses per private user
+```
+
+Sharing rule of thumb:
+
+-   1 admin/publisher = 1 Pro license
+-   each private customer viewer = 1 Pro license
+-   use RLS to restrict each customer to their own company data
+-   avoid Fabric capacity until the number of viewers or Fabric workload needs justify it
 
 ------------------------------------------------------------------------
 
@@ -371,14 +403,14 @@ Not economical at MVP scale.
 Approximation:
 
 ``` text
-Fabric F2 ≈ $321/month
-Power BI Pro ≈ $10/user/month
+Fabric F2 = a few hundred USD/month depending on region/purchase model
+Power BI Pro = around USD 14/user/month on current Microsoft pricing
 ```
 
 Break-even:
 
 ``` text
-321 / 10 ≈ 32 users
+Fabric monthly capacity cost / current Pro per-user price
 ```
 
 General guideline:

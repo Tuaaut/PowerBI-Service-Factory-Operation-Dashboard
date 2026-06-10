@@ -1132,3 +1132,72 @@ Current decision:
 - Do not include KPI icons/images in the current dashboard build
 - Treat icons/images inside KPI cards as a future enhancement, not current scope
 - Revisit later only after finding a proven Power BI Desktop image workflow that works reliably in PBIP
+
+## 2026-06-10 - Power BI Service, Fabric Trial, And Licensing Decision
+
+Context:
+
+- The Fabric website showed a warning that the free Fabric trial capacity will expire soon
+- This project does not currently depend on Fabric as the data warehouse
+- Current project architecture is BigQuery warehouse plus Power BI semantic model/report
+- BigQuery data should not be lost when Fabric trial capacity expires
+- Power BI report/semantic model items should remain usable as Power BI items, but non-Power BI Fabric items such as Lakehouses, Warehouses, notebooks, ML models, and pipelines may become unusable or deleted after the trial grace period
+
+Current project decision:
+
+- Do not buy Fabric just for this MVP dashboard
+- Keep BigQuery as the data warehouse for now
+- Use Power BI Service for publishing and sharing the report
+- Use Power BI Pro per user for the experiment/customer-demo stage
+
+Solution options:
+
+1. BigQuery plus Power BI Pro
+   - Best current fit for this project
+   - BigQuery remains the warehouse
+   - Power BI Desktop/PBIP remains the development format
+   - Power BI Service hosts the report and semantic model
+   - Each person who publishes/shares/views private content generally needs a Power BI Pro license unless the workspace is backed by Premium/Fabric capacity
+   - Example: one admin and two customer viewers usually means three Pro licenses
+   - Current Microsoft list price observed in 2026: Power BI Pro is around USD 14/user/month on the official pricing page, though older memory/pricing was around USD 10/user/month
+
+2. Fabric as the data warehouse plus Fabric capacity
+   - Use this only if the project moves from BigQuery into Microsoft Fabric
+   - Fabric capacity is purchased through Azure as an F SKU, such as F2/F4/F8
+   - F2 pay-as-you-go is roughly a few hundred USD/month in Microsoft pricing examples, before considering any per-user licenses that may still be needed
+   - This option is more expensive and more platform-heavy than needed for the current experiment
+   - Consider later if we need Fabric Lakehouse, Fabric Warehouse, Data Factory pipelines, OneLake, notebooks, or a Microsoft-only analytics stack
+
+3. Power BI Premium Per User
+   - More expensive per user than Pro
+   - Consider only if specific PPU features are needed
+   - Not the first choice for this MVP
+
+4. Publish to web
+   - Cheapest for public portfolio demos
+   - Not suitable for private customer data or RLS because anyone with the public link can view the report
+   - Could be used only for non-sensitive mock-data demos
+
+5. Send PBIX/PBIP files directly
+   - Free and useful for development handoff
+   - Not a proper customer-sharing model
+   - Customer would need Power BI Desktop and could inspect/edit the model
+
+Practical recommendation for the next session:
+
+- If the goal is private sharing with one or two customer viewers, start with Power BI Pro licenses
+- Buy/assign one Pro license for the admin/publisher
+- Buy/assign one Pro license for each private customer viewer
+- Publish the report to a normal Power BI workspace
+- Configure RLS using `user_company_security`
+- Share the report/app with the customer user accounts
+- Avoid Fabric capacity until there is a real reason to move the warehouse/workloads into Fabric
+
+Future rule:
+
+- When seeing Fabric trial-expiration warnings, first identify whether the project actually uses Fabric workload items
+- If the backend is BigQuery and the assets are Power BI reports/semantic models, do not assume Fabric capacity is required
+- Separate the decisions:
+  - Data warehouse: BigQuery vs Fabric Warehouse/Lakehouse
+  - Report sharing: Power BI Pro/PPU per user vs Premium/Fabric capacity
+  - Public demo: GitHub screenshots/PDF or Publish to web with mock data
