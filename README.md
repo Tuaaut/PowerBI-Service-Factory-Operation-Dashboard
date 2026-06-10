@@ -2,8 +2,6 @@
 
 A multi-company factory operations dashboard MVP built with BigQuery and Power BI. The first implemented business pillar is Sustainability / Energy & Environment, covering energy usage, cost, carbon impact, targets, equipment usage, alerts, and energy-saving projects.
 
-![Factory Operation Dashboard](assets/screenshots/factory-operation-dashboard.png)
-
 [Open the exported dashboard PDF](assets/exports/Factory_Operation_Dashboard_MVP.pdf)
 
 ## Dashboard Preview
