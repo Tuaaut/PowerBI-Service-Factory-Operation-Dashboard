@@ -928,6 +928,44 @@ Future rule:
 - Keep `activePageName` reset to Page 1 before handoff
 - Do not confuse semantic/model refresh with report-layout reload
 
+### Power BI Screenshot / GitHub Showcase Workflow
+
+Issue encountered:
+
+- Too much time was wasted trying to take a Power BI dashboard screenshot through desktop/window capture automation
+- The captured image only showed the visible editor area, not the full report page in view/reading mode
+- The user expectation for GitHub README showcasing was full-page dashboard images, not a cropped partial canvas
+
+Future rule:
+
+- When the user asks for Power BI dashboard screenshots, do not spend time fighting desktop screenshot automation
+- First think: `Export to PDF`
+- Ask the user to export the Power BI report/page to PDF if direct export automation is not immediately available
+- The user can quickly convert or extract the PDF pages into PNG images
+- The user will provide the folder path containing those PNGs
+- Copy those PNGs into a tracked repo path such as `assets/screenshots/dashboard-pages/`
+- Add the original local screenshot folder to `.gitignore` if requested, for example `Dashboard Screenshot/`
+- Embed the PNGs sequentially in `README.md`
+- Commit and push only after the README uses the correct full-page images
+
+Preferred README pattern:
+
+```markdown
+[Open the exported dashboard PDF](assets/exports/Factory_Operation_Dashboard_MVP.pdf)
+
+## Dashboard Preview
+
+### Page 1 - Executive Overview
+
+![Executive Overview](assets/screenshots/dashboard-pages/page-01.png)
+```
+
+Lesson learned:
+
+- For Power BI portfolio/GitHub screenshots, PDF export is faster and more reliable than UI screenshot capture
+- Full-page exported images communicate the dashboard better than partial desktop crops
+- Avoid over-checking or over-automating simple screenshot tasks; use the user's provided exported assets directly
+
 ### Visual Hierarchy Defaults
 
 User preference:
