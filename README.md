@@ -6,7 +6,7 @@ A multi-company factory operations dashboard MVP built with BigQuery and Power B
 
 ## Business Purpose
 
-This project demonstrates how a single Power BI report can serve multiple factory companies while keeping each companys data separated through row-level security.
+This project demonstrates how a single Power BI report can serve multiple factory companies while keeping each company's data separated through row-level security.
 
 The dashboard is designed for factory leaders who need to answer:
 
