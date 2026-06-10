@@ -4,6 +4,8 @@ A multi-company factory operations dashboard MVP built with BigQuery and Power B
 
 ![Factory Operation Dashboard](assets/screenshots/factory-operation-dashboard.png)
 
+[Open the exported dashboard PDF](assets/exports/Factory_Operation_Dashboard_MVP.pdf)
+
 ## Business Purpose
 
 This project demonstrates how a single Power BI report can serve multiple factory companies while keeping each company's data separated through row-level security.
