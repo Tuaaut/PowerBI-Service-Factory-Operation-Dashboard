@@ -1,0 +1,135 @@
+table mart_energy_equipment_daily
+	lineageTag: 592f5909-586b-4dc7-82ce-cbebb001ca29
+
+	measure 'Equipment Energy kWh' = SUM ( mart_energy_equipment_daily[energy_kwh] )
+		formatString: #,0.00
+		displayFolder: 04 Equipment
+		lineageTag: 0e78ac29-8c0f-433f-af9b-e8dd693fddfa
+
+	measure 'Equipment Energy Share %' = DIVIDE ( AVERAGE ( mart_energy_equipment_daily[share_pct] ), 100 )
+		formatString: 0%
+		displayFolder: 04 Equipment
+		lineageTag: c615c093-7737-4453-b5d4-24b017d79e4a
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ab12d912-9ba6-4238-9fcd-336b2bbc441a
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column company_id
+		dataType: string
+		isHidden
+		lineageTag: de026903-79b8-4c5a-95a6-790a6f789297
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_name
+		dataType: string
+		isHidden
+		lineageTag: 31f30c2a-2bc1-4749-998d-3e44d80155a9
+		summarizeBy: none
+		sourceColumn: company_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_id
+		dataType: string
+		isHidden
+		lineageTag: a7c9e0b0-6034-44e0-8011-1bcf161b9fd0
+		summarizeBy: none
+		sourceColumn: factory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_name
+		dataType: string
+		isHidden
+		lineageTag: a9b3dee8-77bf-4407-8987-130569c152d3
+		summarizeBy: none
+		sourceColumn: factory_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column equipment_id
+		dataType: string
+		isHidden
+		lineageTag: 3875213e-f822-409b-a074-1af35ade7f2d
+		summarizeBy: none
+		sourceColumn: equipment_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column equipment_name
+		dataType: string
+		isHidden
+		lineageTag: 1ff01e98-8393-4c32-9a94-32ebff128222
+		summarizeBy: none
+		sourceColumn: equipment_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column equipment_category
+		dataType: string
+		lineageTag: d5f27d61-bf90-4d8c-8854-118dfcc74d81
+		summarizeBy: none
+		sourceColumn: equipment_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column criticality
+		dataType: string
+		lineageTag: 2f75f581-893d-474e-89b9-6bd8af4534af
+		summarizeBy: none
+		sourceColumn: criticality
+
+		annotation SummarizationSetBy = Automatic
+
+	column energy_kwh
+		dataType: double
+		lineageTag: d212b317-b9b1-43c9-980d-b62f457e6a4d
+		summarizeBy: sum
+		sourceColumn: energy_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column share_pct
+		dataType: double
+		lineageTag: e0a101c4-9fd6-4830-9642-026fb2f5f424
+		summarizeBy: sum
+		sourceColumn: share_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column status
+		dataType: string
+		lineageTag: a08a2265-d807-4441-ba25-21acc3bbf622
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition mart_energy_equipment_daily = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = null, UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null, ProjectId = null]),
+				  #"Navigation 1" = Source{[Name = "retail-bigquery-project-webapp"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "factory_dashboard_mart", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "mart_energy_equipment_daily", Kind = "View"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

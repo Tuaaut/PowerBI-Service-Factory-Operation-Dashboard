@@ -1,0 +1,112 @@
+table mart_energy_targets
+	lineageTag: 742d1abc-02e8-41c8-95f7-b5601f671b10
+
+	measure 'Target Monthly Energy kWh' = SUM ( mart_energy_targets[target_monthly_energy_kwh] )
+		formatString: #,0.00
+		displayFolder: 02 Targets
+		lineageTag: f825755d-ca1d-488b-b589-e740b29298e0
+
+	measure 'Target Monthly Carbon kgCO2e' = SUM ( mart_energy_targets[target_monthly_carbon_kgco2e] )
+		formatString: #,0.00
+		displayFolder: 02 Targets
+		lineageTag: bac47823-68b6-4ae7-b70b-5ed6e3f20953
+
+	measure 'Target Monthly Cost THB' = SUM ( mart_energy_targets[target_monthly_cost_thb] )
+		formatString: #,0.00
+		displayFolder: 02 Targets
+		lineageTag: 5127baf6-3821-4921-9182-dca0dee55d84
+
+	measure 'Target Energy Reduction %' = AVERAGE ( mart_energy_targets[target_energy_reduction_pct] )
+		formatString: 0.00%
+		displayFolder: 02 Targets
+		lineageTag: da33a1cf-b2c9-4c40-ae9a-33957443f66c
+
+	column period
+		dataType: string
+		lineageTag: 75c22b95-a5ef-4940-8853-26778f1a5090
+		summarizeBy: none
+		sourceColumn: period
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_id
+		dataType: string
+		isHidden
+		lineageTag: c32edc36-cc44-4f25-8763-cbe5188a9bd4
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_id
+		dataType: string
+		isHidden
+		lineageTag: ecf5f191-99c1-46d0-8aad-b6371c4fa142
+		summarizeBy: none
+		sourceColumn: factory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column target_energy_reduction_pct
+		dataType: double
+		lineageTag: 73f71449-78ba-4ff5-9ad2-466b7e3ebd53
+		summarizeBy: sum
+		sourceColumn: target_energy_reduction_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column target_energy_intensity
+		dataType: double
+		lineageTag: d0d8ee39-6b6b-47a9-8477-f6d3b8ab264a
+		summarizeBy: sum
+		sourceColumn: target_energy_intensity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column target_monthly_energy_kwh
+		dataType: double
+		lineageTag: 1d64660f-015d-40d1-879f-8743e57cdc90
+		summarizeBy: sum
+		sourceColumn: target_monthly_energy_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column target_monthly_carbon_kgco2e
+		dataType: double
+		lineageTag: 50a8897b-860c-4dd1-9e45-d6ae6d336011
+		summarizeBy: sum
+		sourceColumn: target_monthly_carbon_kgco2e
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column target_monthly_cost_thb
+		dataType: double
+		lineageTag: 371713a5-48b9-4d69-9e0a-be9ede680899
+		summarizeBy: sum
+		sourceColumn: target_monthly_cost_thb
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition mart_energy_targets = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = null, UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null, ProjectId = null]),
+				  #"Navigation 1" = Source{[Name = "retail-bigquery-project-webapp"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "factory_dashboard_mart", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "mart_energy_targets", Kind = "View"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

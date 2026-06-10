@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Factory_Operation_Dashboard_MVP"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "687ec25c-f3d5-4de7-a0ca-de612dbb809a"
+  }
+}

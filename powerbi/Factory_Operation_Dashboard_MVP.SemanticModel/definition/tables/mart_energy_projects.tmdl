@@ -1,0 +1,143 @@
+table mart_energy_projects
+	lineageTag: 9eafbd00-5028-43ea-aa71-743dbbd43d7d
+
+	measure 'Project Count' = COUNTROWS ( mart_energy_projects )
+		formatString: #,0
+		displayFolder: 07 Projects
+		lineageTag: 247039c5-1172-469e-93c6-d60a658d7537
+
+	measure 'Active Project Count' = CALCULATE ( [Project Count], mart_energy_projects[status] <> "Completed" )
+		formatString: #,0
+		displayFolder: 07 Projects
+		lineageTag: a9f8dda4-83b1-4bb7-8994-4c8562abbb49
+
+	measure 'Average Project Progress %' = AVERAGE ( mart_energy_projects[progress_pct] )
+		formatString: 0.00%
+		displayFolder: 07 Projects
+		lineageTag: c67f8510-e175-4091-b76b-c5c8329b0395
+
+	measure 'Expected Annual Saving THB' = SUM ( mart_energy_projects[expected_annual_saving_thb] )
+		formatString: #,0.00
+		displayFolder: 07 Projects
+		lineageTag: 9035a350-94fd-4a5b-837e-d3e5300f57fd
+
+	measure 'Completed Project Count' = CALCULATE ( [Project Count], mart_energy_projects[status] = "Completed" )
+		formatString: #,0
+		displayFolder: 07 Projects
+		lineageTag: 4c4c2eab-daea-4118-a43f-5a0409f04298
+
+	column project_id
+		dataType: string
+		lineageTag: 836fb293-0e0e-4806-96cb-922e8ba81cb7
+		summarizeBy: none
+		sourceColumn: project_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_id
+		dataType: string
+		isHidden
+		lineageTag: a9bfb2f3-5fbd-4d13-a971-baede7b9f2fb
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_name
+		dataType: string
+		isHidden
+		lineageTag: 4de7ef00-8e9a-415f-8176-bd416e6be96a
+		summarizeBy: none
+		sourceColumn: company_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_id
+		dataType: string
+		isHidden
+		lineageTag: 8051b484-8e90-43ad-a36b-f9f474f41b54
+		summarizeBy: none
+		sourceColumn: factory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_name
+		dataType: string
+		isHidden
+		lineageTag: 1ec8f6e2-ab72-4113-965e-1ae8b86cb930
+		summarizeBy: none
+		sourceColumn: factory_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_name
+		dataType: string
+		lineageTag: d5959ca6-7f66-4cf5-97d9-3b79ace4c8df
+		summarizeBy: none
+		sourceColumn: project_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: dc360e73-177a-4512-b729-7f8f6425823f
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column progress_pct
+		dataType: double
+		lineageTag: 6a2468df-4874-4021-b48c-68db8260132c
+		summarizeBy: sum
+		sourceColumn: progress_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column expected_annual_saving_thb
+		dataType: double
+		lineageTag: c2fb65c5-7f09-407f-a25d-62078b351cfd
+		summarizeBy: sum
+		sourceColumn: expected_annual_saving_thb
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column start_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 97400249-d4a3-4fe9-b2b9-a4a2b5d9dbe1
+		summarizeBy: none
+		sourceColumn: start_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column target_finish_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 37025525-5c7e-41cc-8ced-eb1857d87c91
+		summarizeBy: none
+		sourceColumn: target_finish_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition mart_energy_projects = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = null, UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null, ProjectId = null]),
+				  #"Navigation 1" = Source{[Name = "retail-bigquery-project-webapp"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "factory_dashboard_mart", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "mart_energy_projects", Kind = "View"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

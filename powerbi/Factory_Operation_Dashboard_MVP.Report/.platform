@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Factory_Operation_Dashboard_MVP"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "2a3179a8-a19f-4ab4-be78-c25a62dfe070"
+  }
+}

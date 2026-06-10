@@ -1,5 +1,11 @@
 # Sustainability / Energy & Environment Mock Data
 
+## Start Here
+
+For current project status, completed Power BI work, known issues, and next steps, read:
+
+- `Factory_Operation_Dashboard_Progress_Log.md`
+
 Source reference: `IMG_4224.PNG` energy factory dashboard.
 
 This is the first implemented pillar for the factory operation dashboard MVP. The mock data is designed for Power BI dashboard development and BigQuery warehouse testing.

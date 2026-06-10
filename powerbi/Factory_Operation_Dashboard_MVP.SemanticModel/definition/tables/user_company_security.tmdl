@@ -1,0 +1,69 @@
+table user_company_security
+	lineageTag: 450f509e-57e8-47bf-9dc3-2bc632c26406
+
+	measure 'Security User Count' = DISTINCTCOUNT ( user_company_security[user_email] )
+		formatString: #,0
+		displayFolder: 99 Validation
+		lineageTag: a5e2eed2-731a-402b-a291-3de8409a416b
+
+	measure 'Security Assignment Count' = COUNTROWS ( user_company_security )
+		formatString: #,0
+		displayFolder: 99 Validation
+		lineageTag: 381ee38a-2ba0-4533-9711-460d30c7bf84
+
+	measure 'Active Security Assignment Count' = CALCULATE ( [Security Assignment Count], user_company_security[is_active] = TRUE () )
+		formatString: #,0
+		displayFolder: 99 Validation
+		lineageTag: 7419360f-4472-4c45-b533-d8c2c99da514
+
+	measure 'Security Role Count' = DISTINCTCOUNT ( user_company_security[role_name] )
+		formatString: #,0
+		displayFolder: 99 Validation
+		lineageTag: 7d0db964-e926-44df-b280-93dbe57021e0
+
+	column user_email
+		dataType: string
+		lineageTag: c0f88ab4-47d1-4680-a4ee-7d808eea0f85
+		summarizeBy: none
+		sourceColumn: user_email
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_id
+		dataType: string
+		lineageTag: af204442-f3c7-4d91-af99-041b4bd4caa8
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column role_name
+		dataType: string
+		lineageTag: e579c4c8-da88-4461-84db-6dc4dc4704d0
+		summarizeBy: none
+		sourceColumn: role_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_active
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d8b38e05-cdd6-40b4-adb9-5f880bf9f846
+		summarizeBy: none
+		sourceColumn: is_active
+
+		annotation SummarizationSetBy = Automatic
+
+	partition user_company_security = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = null, UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null, ProjectId = null]),
+				  #"Navigation 1" = Source{[Name = "retail-bigquery-project-webapp"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "factory_dashboard_mart", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "user_company_security", Kind = "View"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

@@ -1,3 +1,6 @@
 .DS_Store
 *.tmp
 *.log
+**/.pbi/cache.abf
+**/.pbi/localSettings.json
+**/.pbi/editorSettings.json

@@ -1,0 +1,53 @@
+table dim_company
+	lineageTag: 5a1d6cf4-bc62-4853-b9c8-335de0ecc83c
+
+	measure 'Visible Company Count' = DISTINCTCOUNT ( dim_company[company_id] )
+		formatString: #,0
+		displayFolder: 99 Validation
+		lineageTag: f084ced5-f081-4c2c-9fb3-87cddecb4945
+
+	column company_id
+		dataType: string
+		lineageTag: b9ab1928-89cf-4b46-a511-9eea10efa34e
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_name
+		dataType: string
+		lineageTag: 0471a3b2-9ad6-40a1-aa13-d779db015bb0
+		summarizeBy: none
+		sourceColumn: company_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column industry
+		dataType: string
+		lineageTag: e0a82487-d0f3-40c9-b4fb-f151ce7d43a0
+		summarizeBy: none
+		sourceColumn: industry
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 70ff738b-3f59-4785-9f1c-80ea8d76392b
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_company = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = null, UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null, ProjectId = null]),
+				  #"Navigation 1" = Source{[Name = "retail-bigquery-project-webapp"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "factory_dashboard_mart", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "dim_company", Kind = "View"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

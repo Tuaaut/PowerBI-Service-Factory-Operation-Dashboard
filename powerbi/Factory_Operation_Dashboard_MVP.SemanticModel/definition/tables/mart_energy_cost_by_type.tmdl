@@ -1,0 +1,101 @@
+table mart_energy_cost_by_type
+	lineageTag: 69d18417-6012-488d-8534-930598662210
+
+	measure 'Energy Type Cost THB' = SUM ( mart_energy_cost_by_type[cost_thb] )
+		formatString: #,0.00
+		displayFolder: 05 Cost Mix
+		lineageTag: 1995d6f0-7d02-47f6-82a8-5d44a73c849d
+
+	measure 'Energy Type Cost Share %' = DIVIDE ( AVERAGE ( mart_energy_cost_by_type[share_pct] ), 100 )
+		formatString: 0%
+		displayFolder: 05 Cost Mix
+		lineageTag: 4a41fc90-f607-4a72-b3ed-22fb37fddc09
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: daa267e0-923e-4d83-a668-62384724edea
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column company_id
+		dataType: string
+		isHidden
+		lineageTag: 48bfa470-fe77-454c-acb9-20b8690aa924
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_name
+		dataType: string
+		isHidden
+		lineageTag: 651a9b1c-a230-4db4-bd16-3fb0c80d7751
+		summarizeBy: none
+		sourceColumn: company_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_id
+		dataType: string
+		isHidden
+		lineageTag: d76fcff6-4689-472a-84f2-1da24069b044
+		summarizeBy: none
+		sourceColumn: factory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_name
+		dataType: string
+		isHidden
+		lineageTag: fe8b01ca-c858-4f7e-b0f6-120fa44d2083
+		summarizeBy: none
+		sourceColumn: factory_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column energy_type
+		dataType: string
+		lineageTag: b6bc4f19-0e77-4e8e-b6e3-c7df477c9132
+		summarizeBy: none
+		sourceColumn: energy_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column cost_thb
+		dataType: double
+		lineageTag: 9587ef08-4858-4bde-9f49-593725e56e38
+		summarizeBy: sum
+		sourceColumn: cost_thb
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column share_pct
+		dataType: double
+		lineageTag: 96abe7ae-ab00-42f6-a7cd-0d9cc468f0ac
+		summarizeBy: sum
+		sourceColumn: share_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition mart_energy_cost_by_type = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = null, UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null, ProjectId = null]),
+				  #"Navigation 1" = Source{[Name = "retail-bigquery-project-webapp"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "factory_dashboard_mart", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "mart_energy_cost_by_type", Kind = "View"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,56 @@
+table dim_equipment
+	lineageTag: bc0e25ad-a157-49e7-b89a-6e99a2572aa0
+
+	column equipment_id
+		dataType: string
+		lineageTag: 5f5e84d2-f239-411a-bdc2-6360acb92ef8
+		summarizeBy: none
+		sourceColumn: equipment_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_id
+		dataType: string
+		lineageTag: ff5a4505-3b3c-427c-a736-68696460c9be
+		summarizeBy: none
+		sourceColumn: factory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column equipment_name
+		dataType: string
+		lineageTag: 8e926fdc-7315-4754-92e7-3bbcf90f3e75
+		summarizeBy: none
+		sourceColumn: equipment_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column equipment_category
+		dataType: string
+		lineageTag: a68f66e2-c714-4aca-b291-0979c326f6c4
+		summarizeBy: none
+		sourceColumn: equipment_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column criticality
+		dataType: string
+		lineageTag: 321bb4f1-97a4-4134-816d-a9d4a2532cf0
+		summarizeBy: none
+		sourceColumn: criticality
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_equipment = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = null, UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null, ProjectId = null]),
+				  #"Navigation 1" = Source{[Name = "retail-bigquery-project-webapp"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "factory_dashboard_mart", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "dim_equipment", Kind = "View"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

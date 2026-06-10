@@ -1,0 +1,178 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 229.69820684832305,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 50,
+            "y": 855.95901637891075
+          },
+          "nodeIndex": "dim_company",
+          "nodeLineageTag": "5a1d6cf4-bc62-4853-b9c8-335de0ecc83c",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1406.5479333561825,
+            "y": 858.8634257951735
+          },
+          "nodeIndex": "dim_equipment",
+          "nodeLineageTag": "bc0e25ad-a157-49e7-b89a-6e99a2572aa0",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 727.55454318767613,
+            "y": 633.20270614061144
+          },
+          "nodeIndex": "dim_factory",
+          "nodeLineageTag": "a6fd66f0-15df-4f62-8dda-c9366adff148",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1093.23637990427,
+            "y": 966.42581713310165
+          },
+          "nodeIndex": "mart_energy_alerts",
+          "nodeLineageTag": "b75d8982-0ecf-41f5-8a13-1e15fda0fe95",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 499.85498179778796,
+            "y": -50
+          },
+          "nodeIndex": "mart_energy_cost_by_type",
+          "nodeLineageTag": "69d18417-6012-488d-8534-930598662210",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 438.46366661631043,
+            "y": 877.82331503997079
+          },
+          "nodeIndex": "mart_energy_daily",
+          "nodeLineageTag": "b8bbc0db-8928-49f0-a14c-43d86b862c5b",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1116.7139866842485,
+            "y": 609.223167421506
+          },
+          "nodeIndex": "mart_energy_equipment_daily",
+          "nodeLineageTag": "592f5909-586b-4dc7-82ce-cbebb001ca29",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 335.82994487746004,
+            "y": 508.66047894474457
+          },
+          "nodeIndex": "mart_energy_hourly",
+          "nodeLineageTag": "02770248-ade2-442d-841b-bb5817546daf",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 624.902480451513,
+            "y": 276.9656623863516
+          },
+          "nodeIndex": "mart_energy_projects",
+          "nodeLineageTag": "9eafbd00-5028-43ea-aa71-743dbbd43d7d",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 804.144874588694,
+            "y": 1245.7679080453011
+          },
+          "nodeIndex": "mart_energy_targets",
+          "nodeLineageTag": "742d1abc-02e8-41c8-95f7-b5601f671b10",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 991.28480839149836,
+            "y": 377.1971772534298
+          },
+          "nodeIndex": "user_company_security",
+          "nodeLineageTag": "450f509e-57e8-47bf-9dc3-2bc632c26406",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1640.5479333561825,
+            "y": 683.88395402265053
+          },
+          "nodeIndex": "Dim Date",
+          "nodeLineageTag": "d89edfde-c6bc-4a5f-8f5d-274040700694",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 40.0525547248832,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

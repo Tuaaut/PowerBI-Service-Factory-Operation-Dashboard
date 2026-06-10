@@ -1,0 +1,7 @@
+role CompanyAccess
+	modelPermission: read
+
+	tablePermission user_company_security = [user_email] = USERPRINCIPALNAME()
+
+	annotation PBI_Id = c4efac027be04d79a7c76721c2b5592f
+

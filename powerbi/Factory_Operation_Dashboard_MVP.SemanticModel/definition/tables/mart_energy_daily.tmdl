@@ -1,0 +1,341 @@
+table mart_energy_daily
+	lineageTag: b8bbc0db-8928-49f0-a14c-43d86b862c5b
+
+	measure 'Total Energy kWh' = SUM ( mart_energy_daily[energy_kwh] )
+		formatString: #,0.00
+		displayFolder: 01 Core KPIs
+		lineageTag: 5faec537-a97e-488f-bee3-de8de840bfc0
+
+	measure 'Total Energy Cost THB' = SUM ( mart_energy_daily[energy_cost_thb] )
+		formatString: #,0.00
+		displayFolder: 01 Core KPIs
+		lineageTag: 407d3ded-6ebc-43e2-94de-dbab5c649533
+
+	measure 'Total Carbon kgCO2e' = SUM ( mart_energy_daily[carbon_kgco2e] )
+		formatString: #,0.00
+		displayFolder: 01 Core KPIs
+		lineageTag: 9b401578-81df-44d0-a8de-fc10664259ee
+
+	measure 'Total Production Units' = SUM ( mart_energy_daily[production_units] )
+		formatString: #,0
+		displayFolder: 01 Core KPIs
+		lineageTag: 1fa24d7d-54b7-464c-b610-9adf902d4d96
+
+	measure 'Energy Intensity kWh per Unit' = DIVIDE ( [Total Energy kWh], [Total Production Units] )
+		formatString: #,0.00
+		displayFolder: 01 Core KPIs
+		lineageTag: b902e613-a9ca-41f2-b553-a75ceac777ce
+
+	measure 'Cost per kWh THB' = DIVIDE ( [Total Energy Cost THB], [Total Energy kWh] )
+		formatString: #,0.00
+		displayFolder: 01 Core KPIs
+		lineageTag: 5192f765-ec3a-462e-bb8f-5c82655b1b68
+
+	measure 'Carbon per Unit kgCO2e' = DIVIDE ( [Total Carbon kgCO2e], [Total Production Units] )
+		formatString: #,0.00
+		displayFolder: 01 Core KPIs
+		lineageTag: 4df27823-2c67-4c27-a2b0-18dc3a269026
+
+	measure 'Target Energy kWh' = SUM ( mart_energy_daily[target_energy_kwh] )
+		formatString: #,0.00
+		displayFolder: 02 Targets
+		lineageTag: b2e42179-a2da-4b79-8990-ee5f2bff9372
+
+	measure 'Target Carbon kgCO2e' = SUM ( mart_energy_daily[target_carbon_kgco2e] )
+		formatString: #,0.00
+		displayFolder: 02 Targets
+		lineageTag: 90418be5-3287-4092-9b0f-661f7ed15ba1
+
+	measure 'Target Energy Intensity' = AVERAGE ( mart_energy_daily[target_energy_intensity] )
+		formatString: #,0.00
+		displayFolder: 02 Targets
+		lineageTag: 02102536-0c71-4eca-995e-5e59d3da6733
+
+	measure 'Energy Variance kWh' = [Total Energy kWh] - [Target Energy kWh]
+		formatString: #,0.00
+		displayFolder: 02 Targets
+		lineageTag: 462fe834-c3d5-4061-a625-c434102a768a
+
+	measure 'Energy Variance %' = DIVIDE ( [Energy Variance kWh], [Target Energy kWh] )
+		formatString: 0.00%
+		displayFolder: 02 Targets
+		lineageTag: a96753c7-a58a-4e77-86f1-479bca9dc0d7
+
+	measure 'Latest Data Date' = MAX ( mart_energy_daily[date] )
+		displayFolder: 03 Time Analysis
+		lineageTag: 087b1c3f-029c-4779-8654-24663cf6e3e6
+
+	measure 'Energy Today kWh' = VAR LatestDate = CALCULATE ( MAX ( mart_energy_daily[date] ), ALL ( mart_energy_daily[date] ) ) RETURN CALCULATE ( [Total Energy kWh], FILTER ( ALL ( mart_energy_daily[date] ), mart_energy_daily[date] = LatestDate ) )
+		formatString: #,0.00
+		displayFolder: 03 Time Analysis
+		lineageTag: faa721a9-1487-463f-b5f9-6553a07834c3
+
+	measure 'Energy Cost Today THB' = VAR LatestDate = CALCULATE ( MAX ( mart_energy_daily[date] ), ALL ( mart_energy_daily[date] ) ) RETURN CALCULATE ( [Total Energy Cost THB], FILTER ( ALL ( mart_energy_daily[date] ), mart_energy_daily[date] = LatestDate ) )
+		formatString: #,0.00
+		displayFolder: 03 Time Analysis
+		lineageTag: b8efe62c-deb4-490d-a6dc-88335cedb78d
+
+	measure 'Carbon Today kgCO2e' = VAR LatestDate = CALCULATE ( MAX ( mart_energy_daily[date] ), ALL ( mart_energy_daily[date] ) ) RETURN CALCULATE ( [Total Carbon kgCO2e], FILTER ( ALL ( mart_energy_daily[date] ), mart_energy_daily[date] = LatestDate ) )
+		formatString: #,0.00
+		displayFolder: 03 Time Analysis
+		lineageTag: 61b45b4f-7ccf-4edf-bd49-c4e085129063
+
+	measure 'MTD Energy kWh' =
+			VAR LatestDate = [Latest Data Date]
+			VAR MonthStart = DATE ( YEAR ( LatestDate ), MONTH ( LatestDate ), 1 )
+			RETURN
+			    CALCULATE (
+			        [Total Energy kWh],
+			        FILTER (
+			            ALL ( 'Dim Date'[Date] ),
+			            'Dim Date'[Date] >= MonthStart
+			                && 'Dim Date'[Date] <= LatestDate
+			        )
+			    )
+		formatString: #,0.00
+		displayFolder: 03 Time Analysis
+		lineageTag: 89845d62-f8ab-4599-9e1d-819caafcc258
+
+	measure 'MTD Energy Cost THB' =
+			VAR LatestDate = [Latest Data Date]
+			VAR MonthStart = DATE ( YEAR ( LatestDate ), MONTH ( LatestDate ), 1 )
+			RETURN
+			    CALCULATE (
+			        [Total Energy Cost THB],
+			        FILTER (
+			            ALL ( 'Dim Date'[Date] ),
+			            'Dim Date'[Date] >= MonthStart
+			                && 'Dim Date'[Date] <= LatestDate
+			        )
+			    )
+		formatString: #,0.00
+		displayFolder: 03 Time Analysis
+		lineageTag: 2a4ff3ba-a23d-40b3-8cf7-136c04903060
+
+	measure 'MTD Carbon kgCO2e' =
+			VAR LatestDate = [Latest Data Date]
+			VAR MonthStart = DATE ( YEAR ( LatestDate ), MONTH ( LatestDate ), 1 )
+			RETURN
+			    CALCULATE (
+			        [Total Carbon kgCO2e],
+			        FILTER (
+			            ALL ( 'Dim Date'[Date] ),
+			            'Dim Date'[Date] >= MonthStart
+			                && 'Dim Date'[Date] <= LatestDate
+			        )
+			    )
+		formatString: #,0.00
+		displayFolder: 03 Time Analysis
+		lineageTag: a0f50369-1966-4fe6-b07d-f327e7dc76b2
+
+	measure 'Previous Month Energy kWh' = CALCULATE ( [Total Energy kWh], DATEADD ( 'Dim Date'[Date], -1, MONTH ) )
+		formatString: #,0.00
+		displayFolder: 03 Time Analysis
+		lineageTag: ba18fd15-799c-484b-a52e-a1907f42153a
+
+	measure 'Energy vs Previous Month %' = DIVIDE ( [Total Energy kWh] - [Previous Month Energy kWh], [Previous Month Energy kWh] )
+		formatString: 0.00%
+		displayFolder: 03 Time Analysis
+		lineageTag: fa188853-3fb4-416c-8a02-03c4a1b491ff
+
+	measure 'Energy Daily Row Count' = COUNTROWS ( mart_energy_daily )
+		formatString: #,0
+		displayFolder: 99 Validation
+		lineageTag: daf62922-8cc0-4364-900a-d8631c77bcfb
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fa9ed458-0e6e-4363-8b7b-9dd329622003
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year_month
+		dataType: string
+		isHidden
+		lineageTag: da39d77e-e7d3-41b1-b34e-0fe0e9af1423
+		summarizeBy: none
+		sourceColumn: year_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_id
+		dataType: string
+		isHidden
+		lineageTag: 3dba3f14-82fa-4ac2-b722-9c60926f9f01
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_name
+		dataType: string
+		isHidden
+		lineageTag: 6e493402-14f3-4867-86e5-603f85777ff4
+		summarizeBy: none
+		sourceColumn: company_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_id
+		dataType: string
+		isHidden
+		lineageTag: 8983b49b-f19e-4b62-9406-a4e3c5501083
+		summarizeBy: none
+		sourceColumn: factory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_name
+		dataType: string
+		isHidden
+		lineageTag: d9d87753-0e87-4457-9b74-642e7e2dc3ac
+		summarizeBy: none
+		sourceColumn: factory_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column province
+		dataType: string
+		lineageTag: 5bec7c24-d253-4669-8877-2d3125c06aa1
+		summarizeBy: none
+		sourceColumn: province
+
+		annotation SummarizationSetBy = Automatic
+
+	column production_units
+		dataType: int64
+		formatString: 0
+		lineageTag: da7c246f-1009-4d72-8b5e-3b842010871b
+		summarizeBy: sum
+		sourceColumn: production_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column energy_kwh
+		dataType: double
+		lineageTag: 4336a718-0ccb-4c60-8f6a-9a7634cd10b0
+		summarizeBy: sum
+		sourceColumn: energy_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column energy_cost_thb
+		dataType: double
+		lineageTag: a49127d4-6171-47d4-b4e3-7af68b45b5cd
+		summarizeBy: sum
+		sourceColumn: energy_cost_thb
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column carbon_kgco2e
+		dataType: double
+		lineageTag: b7b41adb-53df-4be9-b245-2247a0b932ee
+		summarizeBy: sum
+		sourceColumn: carbon_kgco2e
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column energy_intensity_kwh_per_unit
+		dataType: double
+		lineageTag: bfa61d8e-00ac-4582-a5ec-11f2e9156a1b
+		summarizeBy: sum
+		sourceColumn: energy_intensity_kwh_per_unit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cost_per_kwh
+		dataType: double
+		lineageTag: dc548170-de1c-42fc-8bb9-47d7389768d6
+		summarizeBy: sum
+		sourceColumn: cost_per_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column carbon_kgco2e_per_unit
+		dataType: double
+		lineageTag: b42ca744-2cad-420a-a468-0943d3900949
+		summarizeBy: sum
+		sourceColumn: carbon_kgco2e_per_unit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column target_energy_kwh
+		dataType: double
+		lineageTag: 273b8344-ca4e-4d00-8374-1706976d01c1
+		summarizeBy: sum
+		sourceColumn: target_energy_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column target_energy_intensity
+		dataType: double
+		lineageTag: 4f019c9c-bb1e-4073-995c-726fe42fef54
+		summarizeBy: sum
+		sourceColumn: target_energy_intensity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column target_carbon_kgco2e
+		dataType: double
+		lineageTag: 6d14ff03-de69-4049-9c7f-19f7cab75fe2
+		summarizeBy: sum
+		sourceColumn: target_carbon_kgco2e
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column energy_variance_kwh
+		dataType: double
+		lineageTag: b10fa9eb-d596-4eef-b1fa-9d9d845f645a
+		summarizeBy: sum
+		sourceColumn: energy_variance_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column energy_variance_pct
+		dataType: double
+		lineageTag: 0474c3be-2fc4-4032-8937-012c7fe30240
+		summarizeBy: sum
+		sourceColumn: energy_variance_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition mart_energy_daily = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = null, UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null, ProjectId = null]),
+				  #"Navigation 1" = Source{[Name = "retail-bigquery-project-webapp"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "factory_dashboard_mart", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "mart_energy_daily", Kind = "View"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

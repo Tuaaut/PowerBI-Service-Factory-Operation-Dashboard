@@ -1,0 +1,98 @@
+relationship AutoDetected_5f590b12-294e-4c95-9759-6799f10d0e03
+	fromColumn: mart_energy_alerts.company_id
+	toColumn: dim_company.company_id
+
+relationship AutoDetected_85af243b-6c94-42f1-9334-de072c82b158
+	fromColumn: mart_energy_cost_by_type.company_id
+	toColumn: dim_company.company_id
+
+relationship AutoDetected_97b122d4-a3c4-4bfb-9a6b-7031e16e513c
+	fromColumn: mart_energy_daily.company_id
+	toColumn: dim_company.company_id
+
+relationship AutoDetected_ee11d7d6-099a-48ed-afd8-1efc93fa7a10
+	fromColumn: mart_energy_equipment_daily.company_id
+	toColumn: dim_company.company_id
+
+relationship AutoDetected_c04707c5-a751-447d-81b0-d0fa20fdf429
+	fromColumn: mart_energy_hourly.company_id
+	toColumn: dim_company.company_id
+
+relationship AutoDetected_c3ed01e0-48c6-485e-b636-971aa712f6f5
+	fromColumn: mart_energy_projects.company_id
+	toColumn: dim_company.company_id
+
+relationship AutoDetected_53d4e236-1c47-47f0-b780-b76f5c87e8b2
+	fromColumn: mart_energy_targets.company_id
+	toColumn: dim_company.company_id
+
+relationship AutoDetected_1dc51881-5fd8-4560-813f-83452ced4744
+	fromColumn: user_company_security.company_id
+	toColumn: dim_company.company_id
+
+relationship AutoDetected_c1aad3ed-d396-438c-bf1c-097f25175a7c
+	fromColumn: mart_energy_alerts.equipment_id
+	toColumn: dim_equipment.equipment_id
+
+relationship AutoDetected_525d0f03-616d-4ea1-aaee-f37649a4e5c8
+	fromColumn: mart_energy_equipment_daily.equipment_id
+	toColumn: dim_equipment.equipment_id
+
+relationship AutoDetected_022d41be-8421-4554-a4c2-e51404c2e0ab
+	fromColumn: mart_energy_alerts.factory_id
+	toColumn: dim_factory.factory_id
+
+relationship AutoDetected_3af58b38-b1a6-4517-af9a-5f9275bee979
+	fromColumn: mart_energy_cost_by_type.factory_id
+	toColumn: dim_factory.factory_id
+
+relationship AutoDetected_9fbc55a5-9963-4c48-a8f8-fcbb372b368e
+	fromColumn: mart_energy_daily.factory_id
+	toColumn: dim_factory.factory_id
+
+relationship AutoDetected_c301d586-ceec-47c3-aab0-1c926ce46a7b
+	fromColumn: mart_energy_equipment_daily.factory_id
+	toColumn: dim_factory.factory_id
+
+relationship AutoDetected_77e75abf-743f-4f40-a78f-43b4b237443a
+	fromColumn: mart_energy_hourly.factory_id
+	toColumn: dim_factory.factory_id
+
+relationship AutoDetected_4426aa38-70a1-4c90-8405-f993f6d0faa7
+	fromColumn: mart_energy_projects.factory_id
+	toColumn: dim_factory.factory_id
+
+relationship AutoDetected_42720347-6fdb-4cb0-884c-6199e80415ee
+	fromColumn: mart_energy_targets.factory_id
+	toColumn: dim_factory.factory_id
+
+relationship Date_mart_energy_alerts_date
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mart_energy_alerts.date
+	toColumn: 'Dim Date'.Date
+
+relationship Date_mart_energy_cost_by_type_date
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mart_energy_cost_by_type.date
+	toColumn: 'Dim Date'.Date
+
+relationship Date_mart_energy_daily_date
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mart_energy_daily.date
+	toColumn: 'Dim Date'.Date
+
+relationship Date_mart_energy_equipment_daily_date
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mart_energy_equipment_daily.date
+	toColumn: 'Dim Date'.Date
+
+relationship Date_mart_energy_hourly_date
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mart_energy_hourly.date
+	toColumn: 'Dim Date'.Date
+
+relationship Date_mart_energy_projects_start_date
+	joinOnDateBehavior: datePartOnly
+	fromColumn: mart_energy_projects.start_date
+	toColumn: 'Dim Date'.Date
+

@@ -1,0 +1,231 @@
+-- Core date table
+Dim Date =
+ADDCOLUMNS (
+    VAR DateSource =
+        UNION (
+            SELECTCOLUMNS ( mart_energy_alerts, "Date", mart_energy_alerts[date] ),
+            SELECTCOLUMNS ( mart_energy_cost_by_type, "Date", mart_energy_cost_by_type[date] ),
+            SELECTCOLUMNS ( mart_energy_daily, "Date", mart_energy_daily[date] ),
+            SELECTCOLUMNS ( mart_energy_equipment_daily, "Date", mart_energy_equipment_daily[date] ),
+            SELECTCOLUMNS ( mart_energy_hourly, "Date", mart_energy_hourly[date] ),
+            SELECTCOLUMNS ( mart_energy_projects, "Date", mart_energy_projects[start_date] ),
+            SELECTCOLUMNS ( mart_energy_projects, "Date", mart_energy_projects[target_finish_date] )
+        )
+    RETURN
+        CALENDAR ( MINX ( DateSource, [Date] ), MAXX ( DateSource, [Date] ) ),
+    "Year", YEAR ( [Date] ),
+    "Month Number", MONTH ( [Date] ),
+    "Month Name", FORMAT ( [Date], "MMMM" ),
+    "Year Month", FORMAT ( [Date], "YYYY-MM" ),
+    "Quarter", "Q" & FORMAT ( [Date], "Q" ),
+    "Day", DAY ( [Date] )
+)
+
+-- Base measures
+Total Energy kWh = SUM ( mart_energy_daily[energy_kwh] )
+
+Total Energy Cost THB = SUM ( mart_energy_daily[energy_cost_thb] )
+
+Total Carbon kgCO2e = SUM ( mart_energy_daily[carbon_kgco2e] )
+
+Total Production Units = SUM ( mart_energy_daily[production_units] )
+
+Energy Intensity kWh per Unit =
+DIVIDE ( [Total Energy kWh], [Total Production Units] )
+
+Cost per kWh THB =
+DIVIDE ( [Total Energy Cost THB], [Total Energy kWh] )
+
+Carbon per Unit kgCO2e =
+DIVIDE ( [Total Carbon kgCO2e], [Total Production Units] )
+
+Target Energy kWh = SUM ( mart_energy_daily[target_energy_kwh] )
+
+Target Carbon kgCO2e = SUM ( mart_energy_daily[target_carbon_kgco2e] )
+
+Target Energy Intensity =
+AVERAGE ( mart_energy_daily[target_energy_intensity] )
+
+Energy Variance kWh =
+[Total Energy kWh] - [Target Energy kWh]
+
+Energy Variance % =
+DIVIDE ( [Energy Variance kWh], [Target Energy kWh] )
+
+-- Time measures
+Latest Data Date =
+MAX ( mart_energy_daily[date] )
+
+Energy Today kWh =
+VAR LatestDate = [Latest Data Date]
+RETURN
+    CALCULATE (
+        [Total Energy kWh],
+        KEEPFILTERS ( 'Dim Date'[Date] = LatestDate )
+    )
+
+Energy Cost Today THB =
+VAR LatestDate = [Latest Data Date]
+RETURN
+    CALCULATE (
+        [Total Energy Cost THB],
+        KEEPFILTERS ( 'Dim Date'[Date] = LatestDate )
+    )
+
+Carbon Today kgCO2e =
+VAR LatestDate = [Latest Data Date]
+RETURN
+    CALCULATE (
+        [Total Carbon kgCO2e],
+        KEEPFILTERS ( 'Dim Date'[Date] = LatestDate )
+    )
+
+MTD Energy kWh =
+VAR LatestDate = [Latest Data Date]
+VAR MonthStart = DATE ( YEAR ( LatestDate ), MONTH ( LatestDate ), 1 )
+RETURN
+    CALCULATE (
+        [Total Energy kWh],
+        FILTER (
+            ALL ( 'Dim Date'[Date] ),
+            'Dim Date'[Date] >= MonthStart
+                && 'Dim Date'[Date] <= LatestDate
+        )
+    )
+
+MTD Energy Cost THB =
+VAR LatestDate = [Latest Data Date]
+VAR MonthStart = DATE ( YEAR ( LatestDate ), MONTH ( LatestDate ), 1 )
+RETURN
+    CALCULATE (
+        [Total Energy Cost THB],
+        FILTER (
+            ALL ( 'Dim Date'[Date] ),
+            'Dim Date'[Date] >= MonthStart
+                && 'Dim Date'[Date] <= LatestDate
+        )
+    )
+
+MTD Carbon kgCO2e =
+VAR LatestDate = [Latest Data Date]
+VAR MonthStart = DATE ( YEAR ( LatestDate ), MONTH ( LatestDate ), 1 )
+RETURN
+    CALCULATE (
+        [Total Carbon kgCO2e],
+        FILTER (
+            ALL ( 'Dim Date'[Date] ),
+            'Dim Date'[Date] >= MonthStart
+                && 'Dim Date'[Date] <= LatestDate
+        )
+    )
+
+Previous Month Energy kWh =
+CALCULATE (
+    [Total Energy kWh],
+    DATEADD ( 'Dim Date'[Date], -1, MONTH )
+)
+
+Energy vs Previous Month % =
+DIVIDE (
+    [Total Energy kWh] - [Previous Month Energy kWh],
+    [Previous Month Energy kWh]
+)
+
+-- Hourly forecast measures
+Hourly Energy kWh =
+SUM ( mart_energy_hourly[energy_kwh] )
+
+Hourly Forecast kWh =
+SUM ( mart_energy_hourly[forecast_kwh] )
+
+Hourly Forecast Variance kWh =
+[Hourly Energy kWh] - [Hourly Forecast kWh]
+
+Hourly Forecast Variance % =
+DIVIDE ( [Hourly Forecast Variance kWh], [Hourly Forecast kWh] )
+
+-- Equipment measures
+Equipment Energy kWh =
+SUM ( mart_energy_equipment_daily[energy_kwh] )
+
+Equipment Energy Share % =
+DIVIDE ( AVERAGE ( mart_energy_equipment_daily[share_pct] ), 100 )
+
+-- Cost type measures
+Energy Type Cost THB =
+SUM ( mart_energy_cost_by_type[cost_thb] )
+
+Energy Type Cost Share % =
+DIVIDE ( AVERAGE ( mart_energy_cost_by_type[share_pct] ), 100 )
+
+-- Alert measures
+Alert Count =
+COUNTROWS ( mart_energy_alerts )
+
+Open Alert Count =
+CALCULATE (
+    [Alert Count],
+    mart_energy_alerts[status] <> "Closed"
+)
+
+Critical Alert Count =
+CALCULATE (
+    [Alert Count],
+    mart_energy_alerts[severity] = "Critical",
+    mart_energy_alerts[status] <> "Closed"
+)
+
+Warning Alert Count =
+CALCULATE (
+    [Alert Count],
+    mart_energy_alerts[severity] = "Warning",
+    mart_energy_alerts[status] <> "Closed"
+)
+
+-- Project measures
+Project Count =
+COUNTROWS ( mart_energy_projects )
+
+Active Project Count =
+CALCULATE (
+    [Project Count],
+    mart_energy_projects[status] <> "Completed"
+)
+
+Average Project Progress % =
+AVERAGE ( mart_energy_projects[progress_pct] )
+
+Expected Annual Saving THB =
+SUM ( mart_energy_projects[expected_annual_saving_thb] )
+
+Completed Project Count =
+CALCULATE (
+    [Project Count],
+    mart_energy_projects[status] = "Completed"
+)
+
+-- Target table measures
+Target Monthly Energy kWh =
+SUM ( mart_energy_targets[target_monthly_energy_kwh] )
+
+Target Monthly Carbon kgCO2e =
+SUM ( mart_energy_targets[target_monthly_carbon_kgco2e] )
+
+Target Monthly Cost THB =
+SUM ( mart_energy_targets[target_monthly_cost_thb] )
+
+Target Energy Reduction % =
+AVERAGE ( mart_energy_targets[target_energy_reduction_pct] )
+
+-- Validation measures
+Visible Company Count =
+DISTINCTCOUNT ( dim_company[company_id] )
+
+Visible Factory Count =
+DISTINCTCOUNT ( dim_factory[factory_id] )
+
+Energy Daily Row Count =
+COUNTROWS ( mart_energy_daily )
+
+Alert Row Count =
+COUNTROWS ( mart_energy_alerts )

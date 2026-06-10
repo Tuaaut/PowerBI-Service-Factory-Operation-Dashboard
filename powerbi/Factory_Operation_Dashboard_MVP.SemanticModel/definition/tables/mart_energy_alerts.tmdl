@@ -1,0 +1,183 @@
+table mart_energy_alerts
+	lineageTag: b75d8982-0ecf-41f5-8a13-1e15fda0fe95
+
+	measure 'Alert Count' = COUNTROWS ( mart_energy_alerts )
+		formatString: #,0
+		displayFolder: 06 Alerts
+		lineageTag: b6720619-c5bb-48b2-bf47-cab3ae3e76e5
+
+	measure 'Open Alert Count' = CALCULATE ( [Alert Count], mart_energy_alerts[status] <> "Closed" )
+		formatString: #,0
+		displayFolder: 06 Alerts
+		lineageTag: f5ac89ab-d01d-44c2-970f-d9b6b0f50b38
+
+	measure 'Critical Alert Count' = CALCULATE ( [Alert Count], mart_energy_alerts[severity] = "Critical", mart_energy_alerts[status] <> "Closed" )
+		formatString: #,0
+		displayFolder: 06 Alerts
+		lineageTag: 109d500f-932a-47cb-ac83-87a2b3c8fb1d
+
+	measure 'Warning Alert Count' = CALCULATE ( [Alert Count], mart_energy_alerts[severity] = "Warning", mart_energy_alerts[status] <> "Closed" )
+		formatString: #,0
+		displayFolder: 06 Alerts
+		lineageTag: 938b47c5-52b9-4c37-acc5-28d3bf5d5f2b
+
+	measure 'Alert Row Count' = COUNTROWS ( mart_energy_alerts )
+		formatString: #,0
+		displayFolder: 99 Validation
+		lineageTag: 8ca7df63-c496-43fe-b475-181d805ee532
+
+	column alert_id
+		dataType: string
+		lineageTag: 5d6ed553-aa87-4fe1-82a3-52b4c3c66a07
+		summarizeBy: none
+		sourceColumn: alert_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column datetime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6aed4826-aa21-4b48-999d-49ba55f9bee5
+		summarizeBy: none
+		sourceColumn: datetime
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8ebf66cd-820e-4cf4-a07f-18db22cea306
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column company_id
+		dataType: string
+		isHidden
+		lineageTag: 938f34ab-2e20-4303-a6e1-e80b11f30f0f
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_name
+		dataType: string
+		isHidden
+		lineageTag: edabf599-8495-4427-8a4f-26d2c0c328f4
+		summarizeBy: none
+		sourceColumn: company_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_id
+		dataType: string
+		isHidden
+		lineageTag: 1722b6cc-752e-4a6a-b4aa-7fa258da28ef
+		summarizeBy: none
+		sourceColumn: factory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_name
+		dataType: string
+		isHidden
+		lineageTag: 9abd1bae-edf7-402c-a0f3-f2fb3d9cb2e0
+		summarizeBy: none
+		sourceColumn: factory_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column equipment_id
+		dataType: string
+		isHidden
+		lineageTag: 833842fc-21b2-4c81-bc8e-6d3c8fd256a3
+		summarizeBy: none
+		sourceColumn: equipment_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column equipment_name
+		dataType: string
+		isHidden
+		lineageTag: a012d5c0-e04f-4e18-8b90-205bc9b8dede
+		summarizeBy: none
+		sourceColumn: equipment_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column equipment_category
+		dataType: string
+		lineageTag: 5a5e9fc6-fe33-43e1-ae79-0116d5e28060
+		summarizeBy: none
+		sourceColumn: equipment_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column severity
+		dataType: string
+		lineageTag: 840bb04d-3fa3-4892-ac96-1da6f326d876
+		summarizeBy: none
+		sourceColumn: severity
+
+		annotation SummarizationSetBy = Automatic
+
+	column alert_type
+		dataType: string
+		lineageTag: 6399ffce-a87d-41f0-8154-da494f6fa943
+		summarizeBy: none
+		sourceColumn: alert_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column message
+		dataType: string
+		lineageTag: 18845ba3-7dea-4347-a6fc-5331911ad53a
+		summarizeBy: none
+		sourceColumn: message
+
+		annotation SummarizationSetBy = Automatic
+
+	column current_value
+		dataType: double
+		lineageTag: c22c480f-261c-4e11-87ee-44323a04645d
+		summarizeBy: sum
+		sourceColumn: current_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column threshold_value
+		dataType: double
+		lineageTag: 919d7371-5e20-4c73-a43f-23871be4c88c
+		summarizeBy: sum
+		sourceColumn: threshold_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column status
+		dataType: string
+		lineageTag: 27d74333-2cec-4399-a564-bd8d6496f787
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition mart_energy_alerts = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = null, UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null, ProjectId = null]),
+				  #"Navigation 1" = Source{[Name = "retail-bigquery-project-webapp"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "factory_dashboard_mart", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "mart_energy_alerts", Kind = "View"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

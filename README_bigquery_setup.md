@@ -1,5 +1,11 @@
 # BigQuery Setup Plan
 
+## Start Here
+
+For current project status, completed Power BI work, known issues, and next steps, read:
+
+- `Factory_Operation_Dashboard_Progress_Log.md`
+
 Recommended next step: build the warehouse first, then connect Power BI to the `mart` layer.
 
 Current status: BigQuery setup has been created for the factory operation dashboard MVP, focused on the Sustainability / Energy & Environment pillar.
@@ -61,6 +67,7 @@ Source mock data folder:
 - `dim_company`
 - `dim_factory`
 - `dim_equipment`
+- `dim_date`
 - `user_company_security`
 
 Recommended connection behavior:
@@ -97,6 +104,7 @@ Then use model relationships so the filtered company security table limits visib
 Keep these in BigQuery:
 
 - Joining company/factory/equipment names
+- Shared date spine / `dim_date` calendar logic
 - Type cleanup
 - Standard KPI columns
 - Carbon and energy intensity calculations if reusable
@@ -118,3 +126,10 @@ Keep these in Power BI:
 4. Build model relationships.
 5. Create KPI measures for energy, carbon, cost, intensity, targets, alerts, and projects.
 6. Configure RLS and test sample company access.
+
+Current backend cleanup:
+
+- `bigquery/sql/03_create_mart_views.sql` now includes `factory_dashboard_mart.dim_date`.
+- The active Power BI model still keeps the local calculated `Dim Date` table for now.
+- Power BI Desktop rejected changing the existing `Dim Date` partition type from calculated to import through PBIP.
+- Future migration should import `dim_date` as a new table first, validate it in Desktop, then migrate relationships/measures.

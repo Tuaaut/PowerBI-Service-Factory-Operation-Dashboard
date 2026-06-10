@@ -1,0 +1,141 @@
+table mart_energy_hourly
+	lineageTag: 02770248-ade2-442d-841b-bb5817546daf
+
+	measure 'Hourly Energy kWh' = SUM ( mart_energy_hourly[energy_kwh] )
+		formatString: #,0.00
+		displayFolder: 03 Time Analysis
+		lineageTag: 744cac66-5243-4fbf-9a3d-697a49065c30
+
+	measure 'Hourly Forecast kWh' = SUM ( mart_energy_hourly[forecast_kwh] )
+		formatString: #,0.00
+		displayFolder: 03 Time Analysis
+		lineageTag: f8742762-a940-4b84-8c0f-cb7b1a94833a
+
+	measure 'Hourly Forecast Variance kWh' = [Hourly Energy kWh] - [Hourly Forecast kWh]
+		formatString: #,0.00
+		displayFolder: 03 Time Analysis
+		lineageTag: 42398239-3164-489f-9f28-8c006249c1fc
+
+	measure 'Hourly Forecast Variance %' = DIVIDE ( [Hourly Forecast Variance kWh], [Hourly Forecast kWh] )
+		formatString: 0.00%
+		displayFolder: 03 Time Analysis
+		lineageTag: 0dfd00f7-25d9-4118-bfbb-dd49e2b7a500
+
+	column datetime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a02b5f2d-7fdb-45dc-be88-24cc97303e8d
+		summarizeBy: none
+		sourceColumn: datetime
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 93f9db13-96b7-4c0e-8d1f-6149bc1d15c2
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column hour_of_day
+		dataType: int64
+		formatString: 0
+		lineageTag: d0688ac3-9a6f-40a8-a5d2-93750d75773f
+		summarizeBy: sum
+		sourceColumn: hour_of_day
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_id
+		dataType: string
+		isHidden
+		lineageTag: 014d8087-9bfa-4621-b0e9-bbabd271460b
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_name
+		dataType: string
+		isHidden
+		lineageTag: cf40e65e-ce45-4630-8df9-0cc2881d8133
+		summarizeBy: none
+		sourceColumn: company_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_id
+		dataType: string
+		isHidden
+		lineageTag: 6b73f691-96df-477b-9ab2-718633ce2656
+		summarizeBy: none
+		sourceColumn: factory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column factory_name
+		dataType: string
+		isHidden
+		lineageTag: ba02e9cf-5b1e-4844-8600-0a8da87806cf
+		summarizeBy: none
+		sourceColumn: factory_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column energy_kwh
+		dataType: double
+		lineageTag: 22c1e695-38ae-4a17-9fbc-9f19171dd6c5
+		summarizeBy: sum
+		sourceColumn: energy_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column forecast_kwh
+		dataType: double
+		lineageTag: f46bad64-af57-41fa-b24a-55935fe26d4a
+		summarizeBy: sum
+		sourceColumn: forecast_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column forecast_variance_kwh
+		dataType: double
+		lineageTag: 7d70e786-1775-4eb1-b9ed-edd5b2100327
+		summarizeBy: sum
+		sourceColumn: forecast_variance_kwh
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column forecast_variance_pct
+		dataType: double
+		lineageTag: 8e267036-2da9-4602-b51b-e476cb73d999
+		summarizeBy: sum
+		sourceColumn: forecast_variance_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition mart_energy_hourly = m
+		mode: import
+		source =
+				let
+				  Source = GoogleBigQuery.Database([BillingProject = null, UseStorageApi = null, ConnectionTimeout = null, CommandTimeout = null, ProjectId = null]),
+				  #"Navigation 1" = Source{[Name = "retail-bigquery-project-webapp"]}[Data],
+				  #"Navigation 2" = #"Navigation 1"{[Name = "factory_dashboard_mart", Kind = "Schema"]}[Data],
+				  #"Navigation 3" = #"Navigation 2"{[Name = "mart_energy_hourly", Kind = "View"]}[Data]
+				in
+				  #"Navigation 3"
+
+	annotation PBI_ResultType = Table
+

@@ -149,3 +149,44 @@ CREATE OR REPLACE VIEW `YOUR_PROJECT.factory_dashboard_mart.mart_energy_targets`
 SELECT *
 FROM `YOUR_PROJECT.factory_dashboard_raw.energy_targets`;
 
+CREATE OR REPLACE VIEW `YOUR_PROJECT.factory_dashboard_mart.dim_date` AS
+WITH fact_dates AS (
+  SELECT date
+  FROM `YOUR_PROJECT.factory_dashboard_mart.mart_energy_alerts`
+  UNION ALL
+  SELECT date
+  FROM `YOUR_PROJECT.factory_dashboard_mart.mart_energy_cost_by_type`
+  UNION ALL
+  SELECT date
+  FROM `YOUR_PROJECT.factory_dashboard_mart.mart_energy_daily`
+  UNION ALL
+  SELECT date
+  FROM `YOUR_PROJECT.factory_dashboard_mart.mart_energy_equipment_daily`
+  UNION ALL
+  SELECT date
+  FROM `YOUR_PROJECT.factory_dashboard_mart.mart_energy_hourly`
+  UNION ALL
+  SELECT start_date AS date
+  FROM `YOUR_PROJECT.factory_dashboard_mart.mart_energy_projects`
+  UNION ALL
+  SELECT target_finish_date AS date
+  FROM `YOUR_PROJECT.factory_dashboard_mart.mart_energy_projects`
+),
+bounds AS (
+  SELECT
+    MIN(date) AS min_date,
+    MAX(date) AS max_date
+  FROM fact_dates
+  WHERE date IS NOT NULL
+)
+SELECT
+  calendar_date AS date,
+  EXTRACT(YEAR FROM calendar_date) AS year,
+  EXTRACT(MONTH FROM calendar_date) AS month_number,
+  FORMAT_DATE('%B', calendar_date) AS month_name,
+  FORMAT_DATE('%Y-%m', calendar_date) AS year_month,
+  CONCAT('Q', CAST(EXTRACT(QUARTER FROM calendar_date) AS STRING)) AS quarter,
+  EXTRACT(DAY FROM calendar_date) AS day
+FROM bounds,
+UNNEST(GENERATE_DATE_ARRAY(min_date, max_date)) AS calendar_date;
+

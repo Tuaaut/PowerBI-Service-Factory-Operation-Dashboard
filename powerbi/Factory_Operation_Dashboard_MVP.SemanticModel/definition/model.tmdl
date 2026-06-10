@@ -1,0 +1,31 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: th-TH
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["dim_company","dim_equipment","dim_factory","mart_energy_alerts","mart_energy_cost_by_type","mart_energy_daily","mart_energy_equipment_daily","mart_energy_hourly","mart_energy_projects","mart_energy_targets","user_company_security"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table dim_company
+ref table dim_equipment
+ref table dim_factory
+ref table mart_energy_alerts
+ref table mart_energy_cost_by_type
+ref table mart_energy_daily
+ref table mart_energy_equipment_daily
+ref table mart_energy_hourly
+ref table mart_energy_projects
+ref table mart_energy_targets
+ref table user_company_security
+ref table 'Dim Date'
+
+ref role CompanyAccess
+
+ref cultureInfo en-US
+

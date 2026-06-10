@@ -1,5 +1,13 @@
 # Multi-Company Analytics SaaS -- Architecture Decisions
 
+## Start Here For New Sessions
+
+Before continuing dashboard work, read the current progress log:
+
+- `Factory_Operation_Dashboard_Progress_Log.md`
+
+That file records what has already been completed, where the PBIP project lives, which pages are built, known issues, and the next recommended steps. It should be treated as the handoff note for future Codex sessions.
+
 ## Project Goal
 
 Build a multi-company analytics platform with:
