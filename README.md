@@ -6,6 +6,32 @@ A multi-company factory operations dashboard MVP built with BigQuery and Power B
 
 [Open the exported dashboard PDF](assets/exports/Factory_Operation_Dashboard_MVP.pdf)
 
+## Dashboard Preview
+
+### Page 1 - Executive Overview
+
+![Executive Overview](assets/screenshots/dashboard-pages/page-01.png)
+
+### Page 2 - Energy Performance Deep Dive
+
+![Energy Performance Deep Dive](assets/screenshots/dashboard-pages/page-02.png)
+
+### Page 3 - Equipment and Cost Breakdown
+
+![Equipment and Cost Breakdown](assets/screenshots/dashboard-pages/page-03.png)
+
+### Page 4 - Alerts and Energy Projects
+
+![Alerts and Energy Projects](assets/screenshots/dashboard-pages/page-04.png)
+
+### Page 5 - RLS and Admin Validation
+
+![RLS and Admin Validation](assets/screenshots/dashboard-pages/page-05.png)
+
+### Page 6 - Energy Story Lab
+
+![Energy Story Lab](assets/screenshots/dashboard-pages/page-06.png)
+
 ## Business Purpose
 
 This project demonstrates how a single Power BI report can serve multiple factory companies while keeping each company's data separated through row-level security.
